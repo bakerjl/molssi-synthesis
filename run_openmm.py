@@ -31,6 +31,17 @@ platform = mm.Platform.getPlatformByName('CPU')
 ### of the existing forces, you should do it here - after the
 ### System has been created, but before the Simulation is created.
 
+### these lines are for adding a force between atoms 1 and 273, the CA atoms
+### of the first and last residues of Trp-cage, to unfold the protein
+
+custom_bond = mm.CustomBondForce("0.5*k*(r-r0)^2")
+#import IPython
+#IPython.embed()
+custom_bond.addGlobalParameter("k", 1000)
+custom_bond.addGlobalParameter("r0", 5.0)
+custom_bond.addBond(1,273)
+system.addForce(custom_bond)
+
 # Create a Simulation object by putting together the objects above
 simulation = app.Simulation(pdb.topology, system, integrator, platform)
 
